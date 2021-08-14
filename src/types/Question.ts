@@ -1,4 +1,6 @@
 export interface Question {
+  number: number;
+
   /** the question title */
   title: string;
 

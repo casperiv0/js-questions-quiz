@@ -66,13 +66,17 @@ export class Parser {
   private parseRawQuestion(raw: string): Question {
     const rawTitle = raw.match(/######\s[0-9]*.\s[A-Za-z'?!`.\s]/);
     let title = null;
+    let questionNr = null;
 
     if (rawTitle) {
-      title = this.headers
-        .find((v) => v.header.startsWith(rawTitle[0]))
-        .header.split(/######\s[0-9]*./)
+      const header = this.headers.find((v) => v.header.startsWith(rawTitle[0]));
+      title = header.header
+        .split(/######\s[0-9]*./)
         .join(" ")
         .trimStart();
+
+      const [match] = header.header.match(/[0-9]+/);
+      questionNr = match;
     }
 
     const choices: Choice[] = [];
@@ -149,6 +153,7 @@ export class Parser {
       choices,
       code,
       explanation,
+      number: questionNr,
     };
   }
 

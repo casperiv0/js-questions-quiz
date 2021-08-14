@@ -33,7 +33,9 @@ export const QuestionView = ({ question, handleNextQuestion }: Props) => {
     <>
       <div className={styles.questionContainer}>
         <div className={styles.question}>
-          <h1>{question.title}</h1>
+          <h1>
+            #{question.number} {question.title}
+          </h1>
 
           {question.code.value ? (
             <div className={styles.codeContainer}>
@@ -56,12 +58,7 @@ export const QuestionView = ({ question, handleNextQuestion }: Props) => {
         </div>
       </div>
 
-      <Modal
-        handleNextQuestion={handleNextQuestion}
-        onClose={() => null}
-        question={question}
-        state={state}
-      />
+      <Modal handleNextQuestion={handleNextQuestion} question={question} state={state} />
     </>
   );
 };

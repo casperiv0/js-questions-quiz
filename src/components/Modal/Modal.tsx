@@ -25,12 +25,11 @@ interface Props {
   state: States;
 
   handleNextQuestion: () => void;
-  onClose: () => void;
 }
 
-export const Modal = ({ state, question, onClose, handleNextQuestion }: Props) => {
+export const Modal = ({ state, question, handleNextQuestion }: Props) => {
   return (
-    <ReactModal onRequestClose={onClose} style={modalStyles} isOpen={state !== null}>
+    <ReactModal style={modalStyles} isOpen={state !== null}>
       <h1 className={styles.modalTitle}>{state === "correct" ? "Correct" : "Incorrect"} answer</h1>
       {state === "correct" ? (
         <p className={styles.modalText}>{question.answer.text} was indeed the correct answer!</p>
