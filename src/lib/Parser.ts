@@ -109,25 +109,30 @@ export class Parser {
         .split(CODEBLOCK_REGEX)
         .join(" ")
         .split("```")
-        .join(" "),
+        .join(" ")
+        .trim(),
     };
 
     const answer: Answer = {} as Answer;
+    let answerIdx = 0;
     raw.split("\n").forEach((line, idx) => {
       if (line.match(ANSWER_REGEX)) {
-        answer.value = line
+        const parsed = line
           .split(/#### Answer: /)
           .join(" ")
           .trimStart();
 
-        answer.index = idx;
+        answer.value = parsed;
+        answer.text = choices.find((v) => v.value === parsed).text;
+
+        answerIdx = idx;
       }
     });
 
     const explanationStartEnd = { start: 0, end: 0 };
     const exLines = raw.split("\n");
     raw.split("\n").forEach((line, idx) => {
-      if (idx - 2 === answer.index) {
+      if (idx - 2 === answerIdx) {
         explanationStartEnd.start = idx;
       } else if (line.match(EXPLANATION_REGEX)) {
         explanationStartEnd.end = idx;

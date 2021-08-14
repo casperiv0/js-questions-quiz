@@ -16,7 +16,7 @@ export interface Question {
 }
 
 export interface Answer {
-  index: number;
+  text: string;
   value: string;
 }
 

@@ -1,29 +1,32 @@
+import * as React from "react";
+import { QuestionView } from "components/Question/Question";
 import { Parser } from "lib/Parser";
 import { GetStaticProps } from "next";
 import { Question } from "types/Question";
+import { getRandomQuestion } from "lib/questions";
 
 interface Props {
   questions: Question[];
 }
 
 export default function Index({ questions }: Props) {
-  const [question] = questions;
+  const [currentQuestion, setCurrentQuestion] = React.useState(null);
+
+  React.useEffect(() => {
+    setCurrentQuestion(getRandomQuestion(questions));
+  }, [questions]);
+
+  function handleNextQuestion() {
+    setCurrentQuestion(getRandomQuestion(questions));
+  }
+
+  if (!currentQuestion) {
+    return <p>loading question..</p>;
+  }
 
   return (
     <div>
-      <h1> {question.title} </h1>
-
-      <pre>
-        <code className={question.code.language}>{question.code.value}</code>
-      </pre>
-
-      <ul>
-        {question.choices.map((choice) => (
-          <li key={choice.value}>
-            {choice.value}: {choice.text}
-          </li>
-        ))}
-      </ul>
+      <QuestionView handleNextQuestion={handleNextQuestion} question={currentQuestion} />
     </div>
   );
 }
