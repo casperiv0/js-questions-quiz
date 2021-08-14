@@ -1,5 +1,6 @@
 import fetch from "node-fetch";
 import { Answer, Choice, Code, Question } from "types/Question";
+import { changeChoiceOrder } from "./questions";
 
 export const RAW_URL =
   "https://raw.githubusercontent.com/lydiahallie/javascript-questions/master/README.md";
@@ -151,7 +152,7 @@ export class Parser {
     return {
       title,
       answer,
-      choices,
+      choices: changeChoiceOrder(choices),
       code,
       explanation,
       number: questionNr,

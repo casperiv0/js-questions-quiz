@@ -1,4 +1,4 @@
-import { Question } from "types/Question";
+import { Choice, Question } from "types/Question";
 
 const cached: Question[] = [];
 export function getRandomQuestion(questions: Question[]) {
@@ -15,4 +15,13 @@ export function getRandomQuestion(questions: Question[]) {
   cached.push(random);
 
   return random;
+}
+
+export function changeChoiceOrder(choices: Choice[]) {
+  for (let i = choices.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [choices[i], choices[j]] = [choices[j], choices[i]];
+  }
+
+  return choices;
 }
