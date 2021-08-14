@@ -96,12 +96,13 @@ export class Parser {
     const codeBlockLines = raw.split("\n");
     let codeLang = "text";
 
-    raw.split("\n").forEach((line, idx) => {
-      if (line.match(CODEBLOCK_REGEX)) {
+    const lines = raw.split("\n");
+    lines.forEach((line, idx) => {
+      if (line.match(CODEBLOCK_REGEX) && startEnd.start === 0) {
         codeLang = line.split("```").join(" ").trim();
         startEnd.start = idx;
-      } else if (line.match(/```/)) {
-        startEnd.end = idx - 1;
+      } else if (line.match(/```/) && !line.match(CODEBLOCK_REGEX) && startEnd.end === 0) {
+        startEnd.end = idx;
       }
     });
 

@@ -1,5 +1,5 @@
 export interface Question {
-  number: number;
+  number: string;
 
   /** the question title */
   title: string;
