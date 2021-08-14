@@ -1,5 +1,5 @@
 import fetch from "node-fetch";
-import { Answer, Choice, Question } from "types/Question";
+import { Answer, Choice, Code, Question } from "types/Question";
 
 export const RAW_URL =
   "https://raw.githubusercontent.com/lydiahallie/javascript-questions/master/README.md";
@@ -65,7 +65,7 @@ export class Parser {
 
   private parseRawQuestion(raw: string): Question {
     const rawTitle = raw.match(/######\s[0-9]*.\s[A-Za-z'?!`.\s]/);
-    let title;
+    let title = null;
 
     if (rawTitle) {
       title = this.headers
@@ -90,15 +90,27 @@ export class Parser {
 
     const startEnd = { start: 0, end: 0 };
     const codeBlockLines = raw.split("\n");
+    let codeLang = "text";
+
     raw.split("\n").forEach((line, idx) => {
       if (line.match(CODEBLOCK_REGEX)) {
+        codeLang = line.split("```").join(" ").trim();
         startEnd.start = idx;
       } else if (line.match(/```/)) {
         startEnd.end = idx - 1;
       }
     });
 
-    const codeBlock = codeBlockLines.splice(startEnd.start, startEnd.end).join("\n");
+    const code: Code = {
+      language: codeLang,
+      value: codeBlockLines
+        .splice(startEnd.start, startEnd.end)
+        .join("\n")
+        .split(CODEBLOCK_REGEX)
+        .join(" ")
+        .split("```")
+        .join(" "),
+    };
 
     const answer: Answer = {} as Answer;
     raw.split("\n").forEach((line, idx) => {
@@ -130,7 +142,7 @@ export class Parser {
       title,
       answer,
       choices,
-      code: codeBlock,
+      code,
       explanation,
     };
   }

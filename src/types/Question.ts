@@ -6,7 +6,7 @@ export interface Question {
   answer: Answer;
 
   /** codeblock */
-  code: string;
+  code: Code;
 
   /** array of choices */
   choices: Choice[];
@@ -24,4 +24,9 @@ export interface Choice {
   value: string;
 
   text: string;
+}
+
+export interface Code {
+  language: string;
+  value: string;
 }
