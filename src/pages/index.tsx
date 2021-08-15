@@ -7,6 +7,7 @@ import { Question } from "types/Question";
 import { getRandomQuestion } from "lib/questions";
 import { SplashScreen } from "components/Splash/SplashScreen";
 import { useRouter } from "next/dist/client/router";
+import { AllQuestionsCompletedModal } from "components/Modal/AllQuestionsCompleted";
 
 interface Props {
   questions: Question[];
@@ -15,6 +16,8 @@ interface Props {
 export default function Index({ questions }: Props) {
   const router = useRouter();
   const [started, setStarted] = React.useState(false);
+
+  const [handledQuestions, setHandledQuestions] = React.useState(0);
   const [currentQuestion, setCurrentQuestion] = React.useState(null);
 
   React.useEffect(() => {
@@ -29,6 +32,10 @@ export default function Index({ questions }: Props) {
   }, [questions, router.query]);
 
   function handleNextQuestion() {
+    if (handledQuestions + 1 === questions.length) {
+      return setHandledQuestions((p) => p + 1);
+    }
+
     setCurrentQuestion(getRandomQuestion(questions));
   }
 
@@ -41,6 +48,8 @@ export default function Index({ questions }: Props) {
       <Head>
         <title>JavaScript Questions Quiz</title>
       </Head>
+
+      {started && handledQuestions === questions.length ? <AllQuestionsCompletedModal /> : null}
 
       {started ? (
         <QuestionView handleNextQuestion={handleNextQuestion} question={currentQuestion} />

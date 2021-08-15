@@ -6,7 +6,7 @@ import styles from "./modal.module.scss";
 
 ReactModal.setAppElement("#__next");
 
-const modalStyles: ReactModal.Styles = {
+export const modalStyles: ReactModal.Styles = {
   content: {
     position: "absolute",
     left: "50%",

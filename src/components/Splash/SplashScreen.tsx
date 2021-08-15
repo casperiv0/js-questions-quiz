@@ -14,7 +14,7 @@ export const SplashScreen = ({ onStart }: Props) => {
         <p>A quiz to learn more about JavaScript and get better at it!</p>
 
         <div className={styles.credits}>
-          <h3>Credits</h3>
+          <h2>Credits</h2>
 
           <p>
             Questions are parsed from{" "}
@@ -33,7 +33,7 @@ export const SplashScreen = ({ onStart }: Props) => {
         </div>
 
         <div className={styles.todoList}>
-          <h3>todo list</h3>
+          <h2>todo list</h2>
           <ul>
             <li>Fix parser bugs</li>
             <li>Cleanup UI</li>
@@ -42,7 +42,7 @@ export const SplashScreen = ({ onStart }: Props) => {
         </div>
 
         <div className={styles.credits}>
-          <h3>Code</h3>
+          <h2>Code</h2>
 
           <p>
             <a
