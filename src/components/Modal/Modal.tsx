@@ -32,9 +32,19 @@ export const Modal = ({ state, question, handleNextQuestion }: Props) => {
     <ReactModal style={modalStyles} isOpen={state !== null}>
       <h1 className={styles.modalTitle}>{state === "correct" ? "Correct" : "Incorrect"} answer</h1>
       {state === "correct" ? (
-        <p className={styles.modalText}>{question.answer.text} was indeed the correct answer!</p>
+        <p
+          dangerouslySetInnerHTML={{
+            __html: codeToHtml(`${question.answer.text} was indeed the correct answer!`),
+          }}
+          className={styles.modalText}
+        />
       ) : (
-        <p className={styles.modalText}>{question.answer.text} was the correct answer.</p>
+        <p
+          dangerouslySetInnerHTML={{
+            __html: codeToHtml(`${question.answer.text} was the correct answer.`),
+          }}
+          className={styles.modalText}
+        />
       )}
 
       <div className={styles.explanationContainer}>
