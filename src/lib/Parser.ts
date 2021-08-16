@@ -1,5 +1,6 @@
 import fetch from "node-fetch";
 import { Answer, Choice, Code, Question } from "types/Question";
+import { Header } from "types/Header";
 import { changeChoiceOrder } from "./questions";
 
 export const RAW_URL =
@@ -10,11 +11,6 @@ const CHOICE_START_REGEX = /-\s[A-Z]:\s/;
 const CODEBLOCK_REGEX = /```[a-z]+/;
 const ANSWER_REGEX = /#### Answer: [A-Z]/;
 const EXPLANATION_REGEX = /<\/p>/;
-
-interface Header {
-  start: number;
-  header: string;
-}
 
 /**
  * a sh*ty parser :D. It works tho!
@@ -27,20 +23,16 @@ export class Parser {
     this.parseRawQuestions = this.parseRawQuestions.bind(this);
   }
 
-  raw: string;
-
   headers: Header[] = [];
-  questions = [];
 
   async loadPage() {
     try {
       const res = await fetch(RAW_URL);
-      let raw = await res.text();
+      const raw = this.removeIntro(await res.text());
 
-      raw = this.removeIntro(raw);
       this.headers = this.createHeaders(raw.split("\n"));
-      const rawQuestions = this.parseRawQuestions(raw);
 
+      const rawQuestions = this.parseRawQuestions(raw);
       return rawQuestions.map(this.parseRawQuestion);
     } catch (e) {
       console.error(e);
@@ -54,7 +46,7 @@ export class Parser {
     return removed.join("");
   }
 
-  private createHeaders(lines: string[]) {
+  private createHeaders(lines: string[]): Header[] {
     return lines
       .map((v, idx) => {
         if (v.match(QUESTION_HEADER_REGEX)) {
@@ -80,6 +72,7 @@ export class Parser {
       questionNr = match;
     }
 
+    // parse choices from question
     const choices: Choice[] = [];
     raw.split("\n").forEach((line) => {
       const matchArr = line.match(CHOICE_START_REGEX);
@@ -93,6 +86,8 @@ export class Parser {
       }
     });
 
+    // find where code blocks start and end
+    // then parse the code out and put into variable.
     const startEnd = { start: 0, end: 0 };
     const codeBlockLines = raw.split("\n");
     let codeLang = "text";
@@ -112,21 +107,17 @@ export class Parser {
       value: codeBlockLines
         .splice(startEnd.start, startEnd.end)
         .join("\n")
-        .split(CODEBLOCK_REGEX)
-        .join(" ")
-        .split("```")
-        .join(" ")
+        .replace(CODEBLOCK_REGEX, "")
+        .replace("```", "")
         .trim(),
     };
 
+    // find the answer
     const answer: Answer = {} as Answer;
     let answerIdx = 0;
     raw.split("\n").forEach((line, idx) => {
       if (line.match(ANSWER_REGEX)) {
-        const parsed = line
-          .split(/#### Answer: /)
-          .join(" ")
-          .trimStart();
+        const parsed = line.replace(/#### Answer: /, "").trimStart();
 
         answer.value = parsed;
         answer.text = choices.find((v) => v.value === parsed).text;
@@ -135,6 +126,8 @@ export class Parser {
       }
     });
 
+    // find where explanation starts and ends
+    // then parse and put into a variable.
     const explanationStartEnd = { start: 0, end: 0 };
     const exLines = raw.split("\n");
     raw.split("\n").forEach((line, idx) => {
@@ -167,6 +160,7 @@ export class Parser {
     lines.forEach((line, idx) => {
       // line is a header (start of a question)
       if (line.match(QUESTION_HEADER_REGEX)) {
+        // find where the questions ends
         const start = this.headers.find((v) => v.header === line);
         const idxOf = this.headers.indexOf(start);
         const end = this.headers[idxOf + 1];

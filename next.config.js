@@ -12,7 +12,4 @@ module.exports = {
 
     return config;
   },
-  devIndicators: {
-    buildActivity: true,
-  },
 };
