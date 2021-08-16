@@ -35,8 +35,6 @@ export const SplashScreen = ({ onStart }: Props) => {
         <div className={styles.todoList}>
           <h2>todo list</h2>
           <ul>
-            <li>Fix parser bugs</li>
-            <li>Cleanup UI</li>
             <li>Score tracker</li>
           </ul>
         </div>
