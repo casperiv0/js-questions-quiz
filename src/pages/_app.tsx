@@ -1,4 +1,4 @@
-import { AppProps } from "next/dist/shared/lib/router/router";
+import { AppProps } from "next/app";
 import "styles/global.scss";
 
 function App({ Component, pageProps }: AppProps) {

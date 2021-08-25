@@ -22,7 +22,7 @@ export const modalStyles: ReactModal.Styles = {
 
 interface Props {
   question: Question;
-  state: States;
+  state: States | null;
 
   handleNextQuestion: () => void;
 }

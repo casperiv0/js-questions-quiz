@@ -15,20 +15,22 @@ interface Props {
 
 export default function Index({ questions }: Props) {
   const router = useRouter();
-  const [started, setStarted] = React.useState(false);
 
-  const [handledQuestions, setHandledQuestions] = React.useState(0);
-  const [currentQuestion, setCurrentQuestion] = React.useState(null);
+  const [started, setStarted] = React.useState<boolean>(false);
+  const [handledQuestions, setHandledQuestions] = React.useState<number>(0);
+  const [currentQuestion, setCurrentQuestion] = React.useState<Question | null>(null);
 
   React.useEffect(() => {
     /** for testing only */
     if (process.env.NODE_ENV === "development" && router.query.force) {
       const question = questions.find((v) => v.number === (router.query.force as string));
-      setCurrentQuestion(question);
-      return;
-    }
 
-    setCurrentQuestion(getRandomQuestion(questions));
+      if (question) {
+        setCurrentQuestion(question);
+      }
+    } else {
+      setCurrentQuestion(getRandomQuestion(questions));
+    }
   }, [questions, router.query]);
 
   function handleNextQuestion() {
@@ -52,7 +54,7 @@ export default function Index({ questions }: Props) {
       {started && handledQuestions === questions.length ? <AllQuestionsCompletedModal /> : null}
 
       {started ? (
-        <QuestionView handleNextQuestion={handleNextQuestion} question={currentQuestion} />
+        <QuestionView handleNextQuestion={handleNextQuestion} question={currentQuestion!} />
       ) : (
         <SplashScreen onStart={() => setStarted(true)} />
       )}

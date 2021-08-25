@@ -120,7 +120,7 @@ export class Parser {
         const parsed = line.replace(/#### Answer: /, "").trimStart();
 
         answer.value = parsed;
-        answer.text = choices.find((v) => v.value === parsed).text;
+        answer.text = choices.find((v) => v.value === parsed)!.text;
 
         answerIdx = idx;
       }
