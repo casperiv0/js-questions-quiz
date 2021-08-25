@@ -39,7 +39,7 @@ export default function Index({ questions }: Props) {
     setCurrentQuestion(getRandomQuestion(questions));
   }
 
-  if (!currentQuestion) {
+  if (started && !currentQuestion) {
     return <p>loading question..</p>;
   }
 

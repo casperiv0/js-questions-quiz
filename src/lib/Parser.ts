@@ -157,13 +157,13 @@ export class Parser {
 
     const questions: string[] = [];
 
-    lines.forEach((line, idx) => {
+    lines.forEach((line) => {
       // line is a header (start of a question)
       if (line.match(QUESTION_HEADER_REGEX)) {
         // find where the questions ends
         const start = this.headers.find((v) => v.header === line);
         const idxOf = this.headers.indexOf(start);
-        const end = this.headers[idxOf + 1];
+        const end = this.headers[idxOf + 1] ?? { start: lines.length };
 
         const data = [...lines].slice(start.start, end?.start - 2);
 
