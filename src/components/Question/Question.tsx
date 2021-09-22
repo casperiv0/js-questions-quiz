@@ -7,13 +7,14 @@ import { Question } from "types/Question";
 import styles from "./question.module.scss";
 
 interface Props {
+  score: string;
   question: Question;
   handleNextQuestion: () => void;
 }
 
 export type States = "correct" | "incorrect";
 
-export const QuestionView = ({ question, handleNextQuestion }: Props) => {
+export const QuestionView = ({ score, question, handleNextQuestion }: Props) => {
   const [state, setState] = React.useState<States | null>(null);
   const { code } = question;
 
@@ -36,6 +37,7 @@ export const QuestionView = ({ question, handleNextQuestion }: Props) => {
           <h1>
             #{question.number} {question.title}
           </h1>
+          <p>{score}</p>
 
           {question.code.value ? (
             <div className={styles.codeContainer}>
@@ -52,6 +54,7 @@ export const QuestionView = ({ question, handleNextQuestion }: Props) => {
                 className={styles.btnChoice}
                 key={choice.value}
                 dangerouslySetInnerHTML={{ __html: codeToHtml(choice.text) }}
+                disabled={state !== null}
               />
             ))}
           </div>

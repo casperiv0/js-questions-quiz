@@ -34,9 +34,9 @@ export default function Index({ questions }: Props) {
   }, [questions, router.query]);
 
   function handleNextQuestion() {
-    if (handledQuestions + 1 === questions.length) {
-      return setHandledQuestions((p) => p + 1);
-    }
+    setHandledQuestions((p) => p + 1);
+
+    if (handledQuestions + 1 === questions.length) return;
 
     setCurrentQuestion(getRandomQuestion(questions));
   }
@@ -45,19 +45,31 @@ export default function Index({ questions }: Props) {
     return <p>loading question..</p>;
   }
 
+  if (!started) {
+    return (
+      <>
+        <Head>
+          <title>JavaScript Questions Quiz</title>
+        </Head>
+
+        <SplashScreen onStart={() => setStarted(true)} />
+      </>
+    );
+  }
+
   return (
     <>
       <Head>
-        <title>JavaScript Questions Quiz</title>
+        <title>Question #{currentQuestion.number} - JavaScript Questions Quiz</title>
       </Head>
 
-      {started && handledQuestions === questions.length ? <AllQuestionsCompletedModal /> : null}
+      {handledQuestions === questions.length ? <AllQuestionsCompletedModal /> : null}
 
-      {started ? (
-        <QuestionView handleNextQuestion={handleNextQuestion} question={currentQuestion!} />
-      ) : (
-        <SplashScreen onStart={() => setStarted(true)} />
-      )}
+      <QuestionView
+        score={`${handledQuestions}/${questions.length}`}
+        handleNextQuestion={handleNextQuestion}
+        question={currentQuestion}
+      />
     </>
   );
 }

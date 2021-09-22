@@ -1,4 +1,3 @@
-import fetch from "node-fetch";
 import { Answer, Choice, Code, Question } from "types/Question";
 import { Header } from "types/Header";
 import { changeChoiceOrder } from "./questions";

@@ -12,7 +12,7 @@
 
   padding: 0.5rem;
 
-  h1 {
+  > p {
     margin-bottom: 1rem;
   }
 }
@@ -42,7 +42,12 @@
   cursor: pointer;
   border: 1px solid #a1a1a1;
 
-  &:hover {
+  &:hover:enabled {
     filter: brightness(80%);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 }
