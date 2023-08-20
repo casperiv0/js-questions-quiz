@@ -22,4 +22,7 @@ export default function RootLayout(props: RootLayoutProps) {
 export const metadata: Metadata = {
   title: "JavaScript Questions Quiz",
   description: "A quiz game for JavaScript Questions (lydiahallie/javascript-questions)",
+  alternates: {
+    canonical: "https://js-quiz.casperiv.dev",
+  },
 };
