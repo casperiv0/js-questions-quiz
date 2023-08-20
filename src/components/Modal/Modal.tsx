@@ -1,7 +1,7 @@
 import { States } from "components/Question/Question";
-import { codeToHtml } from "lib/toHtml";
+import { codeToHtml } from "lib/to-html";
 import ReactModal from "react-modal";
-import { Question } from "types/Question";
+import { Question } from "types/question";
 import styles from "./modal.module.scss";
 
 ReactModal.setAppElement("#__next");
@@ -24,7 +24,7 @@ interface Props {
   question: Question;
   state: States | null;
 
-  handleNextQuestion: () => void;
+  handleNextQuestion(): void;
 }
 
 export const Modal = ({ state, question, handleNextQuestion }: Props) => {

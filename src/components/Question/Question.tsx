@@ -1,15 +1,15 @@
-import { codeToHtml } from "lib/toHtml";
+import { codeToHtml } from "lib/to-html";
 import * as React from "react";
 import SyntaxHighlighter from "react-syntax-highlighter/dist/cjs/prism-async-light";
 import Theme from "react-syntax-highlighter/dist/cjs/styles/prism/tomorrow";
 import { Modal } from "components/Modal/Modal";
-import { Question } from "types/Question";
+import { Question } from "types/question";
 import styles from "./question.module.scss";
 
 interface Props {
   score: string;
   question: Question;
-  handleNextQuestion: () => void;
+  handleNextQuestion(): void;
 }
 
 export type States = "correct" | "incorrect";

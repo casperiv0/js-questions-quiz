@@ -21,7 +21,7 @@ export const AllQuestionsCompletedModal = () => {
         <a
           target="_blank"
           rel="noreferrer noopener"
-          href="https://github.com/dev-caspertheghost/js-questions-quiz"
+          href="https://github.com/casperiv0/js-questions-quiz"
         >
           GitHub repository
         </a>{" "}

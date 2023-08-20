@@ -1,5 +1,5 @@
-import { Answer, Choice, Code, Question } from "types/Question";
-import { Header } from "types/Header";
+import { Answer, Choice, Code, Question } from "types/question";
+import { Header } from "types/header";
 import { changeChoiceOrder } from "./questions";
 
 export const RAW_URL =
@@ -11,9 +11,6 @@ const CODEBLOCK_REGEX = /```[a-z]+/;
 const ANSWER_REGEX = /#### Answer: [A-Z]/;
 const EXPLANATION_REGEX = /<\/p>/;
 
-/**
- * a sh*ty parser :D. It works tho!
- */
 export class Parser {
   constructor() {
     this.loadPage = this.loadPage.bind(this);
@@ -52,24 +49,27 @@ export class Parser {
           return { start: idx, header: v };
         }
       })
-      .filter(Boolean);
+      .filter(Boolean) as Header[];
   }
 
   private parseRawQuestion(raw: string): Question {
     const rawTitle = raw.match(/######\s[0-9]*.\s[A-Za-z'?!`.\s]/);
-    let title = null;
-    let questionNr = null;
+    let title: string = "";
+    let questionNr: string = "";
 
-    if (rawTitle) {
-      const header = this.headers.find((v) => v.header.startsWith(rawTitle[0]));
-      title = header.header
-        .split(/######\s[0-9]*./)
-        .join(" ")
-        .trimStart();
+    if (!rawTitle) throw new Error("Title not found");
 
-      const [match] = header.header.match(/[0-9]+/);
-      questionNr = match;
-    }
+    const header = this.headers.find((v) => v.header.startsWith(rawTitle[0]));
+    if (!header) throw new Error("Header not found");
+
+    title = header.header
+      .split(/######\s[0-9]*./)
+      .join(" ")
+      .trimStart();
+
+    const [match] = header.header.match(/[0-9]+/) ?? [];
+    if (!match) throw new Error("Question number not found");
+    questionNr = match;
 
     // parse choices from question
     const choices: Choice[] = [];
@@ -161,10 +161,11 @@ export class Parser {
       if (line.match(QUESTION_HEADER_REGEX)) {
         // find where the questions ends
         const start = this.headers.find((v) => v.header === line);
+        if (!start) throw new Error("Header not found");
         const idxOf = this.headers.indexOf(start);
         const end = this.headers[idxOf + 1] ?? { start: lines.length };
 
-        const data = [...lines].slice(start.start, end?.start - 2);
+        const data = [...lines].slice(start.start, end.start - 2);
 
         questions.push(data.join("\n"));
       }

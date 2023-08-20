@@ -5,13 +5,14 @@
     "node": true
   },
   "extends": [
-    "@casper124578/eslint-config",
-    "@casper124578/eslint-config-react",
-    "@casper124578/eslint-config-next"
+    "@casperiv/eslint-config",
+    "@casperiv/eslint-config-react",
+    "@casperiv/eslint-config-next"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "ecmaVersion": 2020,
+    "project": "./tsconfig.json",
+    "ecmaVersion": 2023,
     "sourceType": "module",
     "ecmaFeatures": {
       "jsx": true

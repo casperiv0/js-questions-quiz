@@ -2,7 +2,7 @@ import * as React from "react";
 import styles from "./splash.module.scss";
 
 interface Props {
-  onStart: () => void;
+  onStart(): void;
 }
 
 export const SplashScreen = ({ onStart }: Props) => {
@@ -29,14 +29,8 @@ export const SplashScreen = ({ onStart }: Props) => {
             <a target="_blank" rel="noreferrer noopener" href="https://twitter.com/lydiahallie">
               @lydiahallie
             </a>
+            .
           </p>
-        </div>
-
-        <div className={styles.todoList}>
-          <h2>todo list</h2>
-          <ul>
-            <li>Score tracker</li>
-          </ul>
         </div>
 
         <div className={styles.credits}>
@@ -46,7 +40,7 @@ export const SplashScreen = ({ onStart }: Props) => {
             <a
               target="_blank"
               rel="noreferrer noopener"
-              href="https://github.com/dev-caspertheghost/js-questions-quiz"
+              href="https://github.com/casperiv0/js-questions-quiz"
             >
               The code for this project can be found here.
             </a>{" "}
