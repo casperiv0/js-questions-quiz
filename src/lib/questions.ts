@@ -1,5 +1,5 @@
 import arrayShuffle from "array-shuffle";
-import { Choice, Question } from "types/Question";
+import { Choice, Question } from "types/question";
 
 const cached: Question[] = [];
 export function getRandomQuestion(questions: Question[]) {

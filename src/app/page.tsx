@@ -4,7 +4,6 @@ import JavaScriptQuizGame from "./game";
 
 const parser = new Parser();
 
-export const runtime = "edge";
 export const revalidate = 3600;
 
 export default async function SplashScreenPage() {
